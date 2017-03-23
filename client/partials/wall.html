@@ -1,0 +1,45 @@
+<div class="row" ng-controller='loginController'>
+    <div class="col-md-10 col-md-offset-1">
+        <p class='pull-right'>Welcome {{curUser}}! | <a href="#!/" ng-click="logOut()">Logout!</a>
+    </div>
+</div>
+<div class="row">
+    <h1 class="text-center">- The Wall -</h1>
+    <div class="col-md-10 col-md-offset-1">
+        <form class="form-horizontal" ng-submit='addMessage()' method="post">
+            <div class="form-group">
+                <label>Create New Message</label>
+                <textarea ng-model='newMessage.message' class="form-control" rows="3"></textarea>
+            </div>
+            <button type='submit' class='pull-right btn btn-primary'>Add Message</button>
+        </form>
+    </div>
+</div>
+<div ng-repeat="message in messages | orderBy: '-created_at'">
+    <div class="row">
+        <div class="col-md-9 col-md-offset-2">
+            <p><strong>{{message.user}} writes:</strong></p>
+            <p class='lead'>{{message.message}}</p>
+            <p class="pull-right"><em>Posted at {{message.created_at | date: 'M/d/yy h:mm a'}}</em></p>
+        </div>
+    </div>
+    <div class='row' ng-repeat="comment in message.comments | orderBy: 'created_at'">
+        <div class="col-md-6 col-md-offset-5">
+            <p><strong>{{comment.user}} writes:</strong></p>
+            <p>{{ comment.comment }}</p>
+            <p class="pull-right"><em>Posted at {{comment.created_at | date: 'M/d/yy h:mm a'}}</em></p>
+        </div>
+    </div>
+    <div class='row'>
+        <div class="col-md-6 col-md-offset-5">
+            <form class="form-horizontal" ng-submit='addComment(message._id)' method="post">
+                <div class="form-group">
+                    <label>Add A Comment</label>
+                    <textarea ng-model="newComment[message._id]" class="form-control" rows="3"></textarea>
+                </div>
+                <button type='submit' class='pull-right btn btn-primary'>Add Comment</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+</div>
